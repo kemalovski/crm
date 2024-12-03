@@ -21,6 +21,6 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::post('tasks', [TaskController::class, 'store']);
     Route::put('tasks/{id}', [TaskController::class, 'update']);
-    Route::get('employees/{id}/tasks', [TaskController::class, 'index']);
-    Route::patch('tasks/{id}/complete', [TaskController::class, 'complete']);
+    Route::get('employees/{id}/tasks', [TaskController::class, 'getTasks']);
+    Route::patch('tasks/{id}/complete', [TaskController::class, 'markComplete']);
 });

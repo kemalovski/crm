@@ -51,7 +51,7 @@ class TaskController extends Controller
         }
     }
 
-    public function index($employeeId)
+    public function getTasks($employeeId)
     {
         try {
             $employee = Employee::find($employeeId);
@@ -71,7 +71,7 @@ class TaskController extends Controller
         }
     }
 
-    public function complete($id)
+    public function markComplete($id)
     {
         try {
             $task = Task::findOrFail($id);
