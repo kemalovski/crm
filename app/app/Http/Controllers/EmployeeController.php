@@ -2,20 +2,51 @@
 // app/Http/Controllers/EmployeeController.php
 namespace App\Http\Controllers;
 
+use App\Http\Responses\ApiResponse;
 use App\Models\Employee;
-use App\Models\Task;
-use Illuminate\Http\Request;
 
 class EmployeeController extends Controller
 {
     public function index()
     {
-        return response()->json(Employee::all(), 200);
+        try {
+
+            return new ApiResponse(
+                true,
+                'Employees retrieved successfully.',
+                Employee::all()->toArray(),
+                200
+            );
+        } catch (\Exception $e) {
+            return new ApiResponse(
+                false,
+                $e->getMessage(),
+                [],
+                500
+            );
+        }
     }
 
     public function show($id)
     {
-        $employee = Employee::findOrFail($id);
-        return response()->json($employee, 200);
+        try {
+
+            $employee = Employee::findOrFail($id)->toArray();
+
+            return new ApiResponse(
+                true,
+                'Here is employee',
+                $employee,
+                200
+            );
+        } catch (\Exception $e) {
+
+            return new ApiResponse(
+                false,
+                $e->getMessage(),
+                [],
+                500
+            );
+        }
     }
 }

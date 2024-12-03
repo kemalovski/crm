@@ -6,34 +6,90 @@ use App\Models\Task;
 use App\Models\Employee;
 use App\Http\Requests\TaskStoreRequest;
 use App\Http\Requests\TaskUpdateRequest;
-use Illuminate\Http\Request;
+use App\Http\Responses\ApiResponse;
 
 class TaskController extends Controller
 {
     public function store(TaskStoreRequest $request)
     {
-        $task = Task::create($request->validated());
-        return response()->json($task, 201);
+        try {
+            $task = Task::create($request->validated());
+            return new ApiResponse(
+                true,
+                "task has been created",
+                $task->toArray(),
+                201
+            );
+        } catch (\Exception $e) {
+            return new ApiResponse(
+                false,
+                $e->getMessage(),
+                [],
+                500
+            );
+        }
     }
 
     public function update(TaskUpdateRequest $request, $id)
     {
-        $task = Task::findOrFail($id);
-        $task->update($request->validated());
-        return response()->json($task, 200);
+        try {
+            $task = Task::findOrFail($id);
+            $task->update($request->validated());
+            return new ApiResponse(
+                true,
+                "task has been updated",
+                $task->toArray(),
+                200
+            );
+        } catch (\Exception $e) {
+            return new ApiResponse(
+                false,
+                $e->getMessage(),
+                [],
+                500
+            );
+        }
     }
 
     public function index($employeeId)
     {
-        $employee = Employee::findOrFail($employeeId);
-        return response()->json($employee->tasks, 200);
+        try {
+            $employee = Employee::find($employeeId);
+            return new ApiResponse(
+                true,
+                "here is employee tasks",
+                $employee->tasks,
+                200
+            );
+        } catch (\Exception $e) {
+            return new ApiResponse(
+                false,
+                $e->getMessage(),
+                [],
+                500
+            );
+        }
     }
 
     public function complete($id)
     {
-        $task = Task::findOrFail($id);
-        $task->status = 'completed';
-        $task->save();
-        return response()->json($task, 200);
+        try {
+            $task = Task::findOrFail($id);
+            $task->status = 'completed';
+            $task->save();
+            return new ApiResponse(
+                true,
+                "here is employee tasks",
+                $task,
+                200
+            );
+        } catch (\Exception $e) {
+            return new ApiResponse(
+                false,
+                $e->getMessage(),
+                [],
+                500
+            );
+        }
     }
 }

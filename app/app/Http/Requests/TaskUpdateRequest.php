@@ -2,9 +2,7 @@
 // app/Http/Requests/TaskUpdateRequest.php
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
-
-class TaskUpdateRequest extends FormRequest
+class TaskUpdateRequest extends BaseRequest
 {
     public function authorize()
     {
@@ -14,6 +12,7 @@ class TaskUpdateRequest extends FormRequest
     public function rules()
     {
         return [
+            'employee_id' => 'required|exists:employees,id',
             'title' => 'nullable|string|max:255',
             'status' => 'nullable|in:pending,in_progress,completed',
         ];
