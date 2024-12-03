@@ -1,23 +1,21 @@
 <?php
-
+// app/Http/Controllers/EmployeeController.php
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Employee;
+use App\Models\Task;
+use Illuminate\Http\Request;
 
 class EmployeeController extends Controller
 {
-    /**
-     * Tüm çalışanları listele.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        // Tüm çalışanları getir
-        $employees = Employee::all();
+        return response()->json(Employee::all(), 200);
+    }
 
-        // Çalışanları JSON formatında döndür
-        return response()->json($employees);
+    public function show($id)
+    {
+        $employee = Employee::findOrFail($id);
+        return response()->json($employee, 200);
     }
 }
