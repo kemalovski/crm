@@ -10,11 +10,17 @@ Route::get('/user', function (Request $request) {
 
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\TaskController;
+use App\Http\Controllers\AuthController;
 
-Route::get('employees', [EmployeeController::class, 'index']);
-Route::get('employees/{id}', [EmployeeController::class, 'show']);
+Route::post('/login', [AuthController::class, 'login']);
 
-Route::post('tasks', [TaskController::class, 'store']);
-Route::put('tasks/{id}', [TaskController::class, 'update']);
-Route::get('employees/{id}/tasks', [TaskController::class, 'index']);
-Route::patch('tasks/{id}/complete', [TaskController::class, 'complete']);
+Route::middleware('auth:sanctum')->group(function () {
+
+    Route::get('employees', [EmployeeController::class, 'index']);
+    Route::get('employees/{id}', [EmployeeController::class, 'show']);
+
+    Route::post('tasks', [TaskController::class, 'store']);
+    Route::put('tasks/{id}', [TaskController::class, 'update']);
+    Route::get('employees/{id}/tasks', [TaskController::class, 'index']);
+    Route::patch('tasks/{id}/complete', [TaskController::class, 'complete']);
+});
